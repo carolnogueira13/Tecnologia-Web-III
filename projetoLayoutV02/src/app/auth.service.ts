@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
-  constructor() { }
-
   isAuthenticated(){
     let flag = localStorage.getItem("logado");
     if (flag == "true"){

@@ -1,19 +1,23 @@
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from '../auth.service'
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
+export const authGuard: CanActivateFn = () => {
+  return inject(AuthService).isAuthenticated()
+  ? true
+  : inject(Router).parseUrl('/login');
 
-export class AutoGuard{
-  constructor(private autoService: AuthService, private router: Router){}
+};
 
-  CanActivateFn(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    let authenticated = this.autoService.isAuthenticated();
+// Outra forma mais escrita:
+// const authService = inject(AuthService);
+//   const router = inject(Router);
 
-    if (!authenticated){
-      this.router.navigate(['login']);
-      return false;
-    }
+//   if (authService.isAuthenticated()) {
+//     return true;
+//   }
 
-    return authenticated;
-  }
-}
+//   // Redirect to the login page
+//   return router.parseUrl('/login');
+
 
